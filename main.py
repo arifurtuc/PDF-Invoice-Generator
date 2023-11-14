@@ -56,5 +56,21 @@ for filepath in filepaths:
         pdf.cell(w=30, h=8, txt=str(row["price_per_unit"]), border=1)
         pdf.cell(w=30, h=8, txt=str(row["total_price"]), border=1, ln=1)
 
+    # Calculate the total sum of the 'total_price' column in the DataFrame
+    total_sum = df["total_price"].sum()
+
+    # Draw empty cells for the first four columns
+    pdf.cell(w=30, h=8, border=1)
+    pdf.cell(w=65, h=8, border=1)
+    pdf.cell(w=35, h=8, border=1)
+    pdf.cell(w=30, h=8, border=1)
+
+    # Add the total sum to the PDF table
+    pdf.cell(w=30, h=8, txt=str(total_sum), border=1, ln=1)
+
+    # Display the total due amount at the end of the PDF
+    pdf.set_font(family="Times", size=12, style="B")
+    pdf.cell(w=0, h=12, txt=f"The total due amount is {total_sum} Euros.")
+
     # Output the PDF with the filename derived from the original file
     pdf.output(f"PDFs/{filename}.pdf")
