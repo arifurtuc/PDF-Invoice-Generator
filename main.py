@@ -5,7 +5,7 @@ from fpdf import FPDF
 from pathlib import Path
 
 # Get a list of file paths for all Excel files in the 'invoices' directory
-filepaths = glob.glob("invoices/*xlsx")
+filepaths = glob.glob("invoices/*.xlsx")
 
 # Iterate through each file path in the 'filepaths' list
 for filepath in filepaths:
@@ -16,13 +16,17 @@ for filepath in filepaths:
     pdf = FPDF(orientation="P", unit="mm", format="A4")
     pdf.add_page()
 
-    # Extract the invoice number from the filename
+    # Extract the invoice number, date from the filename
     filename = Path(filepath).stem
-    invoice_number = filename.split("-")[0]
+    invoice_number, date = filename.split("-")
 
-    # Add content to the PDF
+    # Add invoice nr. to the PDF
     pdf.set_font(family="Times", size=16, style="B")
-    pdf.cell(w=50, h=8, txt=f"Invoice Nr. {invoice_number}")
+    pdf.cell(w=50, h=8, txt=f"Invoice Nr. {invoice_number}", ln=1)
+
+    # Add date to the PDF
+    pdf.set_font(family="Times", size=16, style="B")
+    pdf.cell(w=50, h=8, txt=f"Date: {date}")
 
     # Output the PDF with the filename derived from the original file
     pdf.output(f"PDFs/{filename}.pdf")
